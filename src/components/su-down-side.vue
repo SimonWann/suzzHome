@@ -2,17 +2,28 @@
   <div id="downAside">
       <router-link active-class="hit" to="/a"><ph-trash :size="20" :color="color" weight="bold" /></router-link>
       <router-link active-class="hit" to="/a"><ph-gear :size="20" :color="color" weight="bold" /></router-link>
-      <router-link active-class="hit" to="/a"><ph-lightning :size="20" :color="color" weight="bold" /></router-link>
+      <a :class="{hit: hit}" @click.prevent="openTran"><ph-lightning :size="20" :color="color" weight="bold" /></a>
   </div>
 </template>
 
 <script lang="ts">
-import {reactive, ref, defineComponent} from "vue"
+import {reactive, ref, defineComponent, computed} from "vue"
+import { useStore } from 'vuex'
 export default defineComponent({
   setup() {
       const color = ref('#d4d4d4')
+      let store = useStore()
+      function openTran(){
+          store.commit('tranOpen')
+      }
+      const hit = computed(() => {
+          return store.state.uiSetting.isTranClose
+      })
       return {
-          color
+          color,
+          store,
+          openTran,
+          hit
       }
   }
 })

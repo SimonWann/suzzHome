@@ -27,4 +27,10 @@ export default defineComponent({
     width: 195px;
     overflow: hidden;
   }
+  @media screen and (max-width: 580px) {
+    .filecatalog{
+      display: none;
+    }
+    
+  }
 </style>

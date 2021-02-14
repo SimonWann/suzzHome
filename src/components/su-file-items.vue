@@ -1,6 +1,6 @@
 <template>
   <div id="fileItems">
-      <su-file-box :fileData="files[index]" v-for="(value, index) in files" />
+      <su-file-box :fileData="value" :depth="value.depth" :fileInd="index" v-for="(value, index) in files" />
   </div>
 </template>
 
@@ -17,7 +17,8 @@ export default defineComponent({
       const store = useStore()
       let files = reactive({})
       files = computed(() => {
-          return store.getters.fileData
+        //   console.log(store.getters.fileData.data)
+          return store.getters.fileData.data
       })
       
       return {
@@ -41,5 +42,10 @@ export default defineComponent({
         justify-content: flex-start;
         flex-wrap: wrap;
         overflow: auto;
+        @media screen and (max-width: 580px) {
+            #fileItems{
+                justify-content: space-around;
+            }
+        }
     }
 </style>

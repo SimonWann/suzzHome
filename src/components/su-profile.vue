@@ -3,15 +3,18 @@
       <div id="notification">
           <ph-bell-simple :size="20" weight="bold" color="#555761" />
       </div>
-      <div id="info">SimonWann</div>
+      <div id="info">{{name}}</div>
   </div>
 </template>
 
 <script lang="ts">
-import {reactive, toRefs, defineComponent} from "vue"
+import {reactive, ref, defineComponent} from "vue"
 export default defineComponent({
   setup() {
-
+      let name = ref('SimonWann')
+      return{
+          name
+      }
   }
 })
 </script>
@@ -21,7 +24,6 @@ export default defineComponent({
 @silver9: #555761;
     #profile{
         border: 1px solid #d4d4d4;
-
         height: 36px;
         background: #fafafa;
         display: flex;
@@ -36,5 +38,6 @@ export default defineComponent({
                 padding-top: 2px;
             }
         }
+        overflow: hidden;
     }
 </style>

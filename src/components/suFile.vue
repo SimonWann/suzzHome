@@ -26,6 +26,6 @@ export default defineComponent({
 </script>
 <style lang="less">
    #fileArea{
-       width: calc(100% - 195px);
+       width: 100%;
    }
 </style>

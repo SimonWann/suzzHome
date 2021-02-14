@@ -5,10 +5,8 @@
           <ph-list-dashes :size="16" weight="bold" color="#7e8087" />
       </div>
         <ul>
-            <li v-for="(item, index) in dir" @click="activeColor(index)" @mouseenter="enColor" @mouseleave="leColor" :class="{activeColor: index === isHit}"> 
-                <ph-triangle class="triangle" :class="{triangle2: index === isHit}" :size="5" color="#000" weight="light" />
-                <ph-folder :size="20" weight="light" color="#000" />
-                <div id="filename" :class="{filenameHit: index === isHit}">{{item.name.name}}</div>
+            <li v-for="(item, index) in dir" > 
+                <dir-item :dirPath="''" :depth="1" :dirList="item" ></dir-item>
             </li>
         </ul>
   </div>
@@ -17,31 +15,35 @@
 <script lang="ts">
 import {reactive, ref, defineComponent, computed} from "vue"
 import { useStore } from 'vuex'
+import dirItem from './su-dir-item.vue'
+
 export default defineComponent({
+  name: 'suDir',
+  components: {
+    dirItem
+  },
   setup() {
       const name = ref('我的文件夹')
-      const isHit = ref(-1)
       const ycolor = ref('#f9c440')
       const scolor = ref('#fafafa')
       const store = useStore()
       let dir = reactive({})
       dir = computed(() => {
-          return (store.getters.fileData as Array<object>).filter((val, index) => {
-              return (val as any).isDir
+            // console.log(store.state.init.profile.userDir)
+        return store.state.init.profile.userDir.data?.filter((val: any, index: number) =>{
+            return val.data instanceof Array
         })
       })
-    function activeColor(index: number) {
-        isHit.value = index
-    }
+
     const hitColor = computed((index: number) => {
-        console.log(index)
+        // console.log(index)
         return 
     })
+    let childDirPadding = ref(8)
       return{
           name,
-          isHit,
-          activeColor,
-          dir
+          dir,
+          childDirPadding
       }
   }
 })
@@ -64,19 +66,8 @@ export default defineComponent({
             opacity: 100%;
         }
     }
-    @keyframes backColor{
-        from{
-            background: @silver1;
-        }
-        to{
-            background: @straberry;
-        }
-    }
-    .activeColor{
-        background: @straberry;
-        color: @silver1;
-    }
     #dir{
+        overflow: hidden;
         border-right: 1px solid #d4d4d4;
         background: @silver1;
         width: calc(100% - 1px);
@@ -107,28 +98,7 @@ export default defineComponent({
             margin: 0px;
             list-style: none;
             li{
-                color: @silver9;
-                display: flex;
-                align-items: center;
-                padding: 5px 8px;
-                .triangle{
-                    transform: rotate(90deg);
-                }
-                .triangle2{
-                    transform: rotate(180deg);
-                }
-                #filename{
-                    margin-left: 5px;
-                    cursor: default;
-                }
-                .filenameHit{
-                    color: @silver1;
-                }
-               &:hover{
-                  background: @straberry;
-                  color: @silver1;
-               } 
-               
+                display: block;
             }
         }
     }
