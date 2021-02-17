@@ -1,5 +1,5 @@
 <template>
-  <div id="err" v-if="isShow">
+  <div id="playerr" v-if="isShow">
     该视频还未编码,无法播放 :(
   </div>
   <div id="remove" v-if="isShow2" >
@@ -7,6 +7,15 @@
   </div>
   <div id="download" v-if="isShow3">
     正在下载，请点击左下角闪电图标.
+  </div>
+  <div id="renameSuc" v-if="isShow4">
+    重命名成功！
+  </div>
+  <div id="copy" v-if="isShow5">
+    复制失败
+  </div>
+  <div id="mkdirAlert" v-if="isShow6">
+    文件夹创建成功！
   </div>
 </template>
 
@@ -17,9 +26,12 @@ export default defineComponent({
   name: 'suAlert',
   setup() {
     const store = useStore()
-    const isShow1 = ref(false)
-    const isShow2 = ref(false)
-    const isShow3 = ref(false)
+    let isShow1 = ref(false)
+    let isShow2 = ref(false)
+    let isShow3 = ref(false)
+    let isShow4 = ref(false)
+    let isShow5 = ref(false)
+    let isShow6 = ref(false)
     watch(() => store.state.moreMenu.isCoded, (val, p) => {
       if(!val) {
         isShow1.value = false
@@ -39,14 +51,39 @@ export default defineComponent({
         isShow3.value = true
         setTimeout(() => {
           isShow3.value = false
-        }, 1500);
+        }, 2500);
         //下载提示的自动关闭
+      }
+    })
+    watch(() => store.state.moreMenu.fileRename.isOk, (val, p) => {
+      if(val) {
+        isShow4.value = true
+      } else {
+        isShow4.value = false
+      }
+    })
+    watch(() => store.state.moreMenu.isCopied, (val, p) => {
+      if(val) {
+        isShow5.value = false
+      } else {
+        isShow5.value = true
+      }
+    })
+    watch(() => store.state.itemSet.isMdDir, (val, p) => {
+      console.log(val)
+      if(val) {
+        isShow6.value = true
+      } else {
+        isShow6.value = false
       }
     })
     return {
       isShow1,
       isShow2,
-      isShow3
+      isShow3,
+      isShow4,
+      isShow5,
+      isShow6
     }
   }
 })
@@ -88,7 +125,7 @@ export default defineComponent({
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1px;
-    #err{
+    #playerr{
       border: 1px solid @strawberry3;
       color: @strawberry5;
       background: @strawberry1;
@@ -105,6 +142,30 @@ export default defineComponent({
       color: @banana7;
       background: @banana1;
       box-shadow: 0px 0px 5px @banana3;
+    }
+    #renameErr{
+      border: 1px solid @lime3;
+      color: @lime5;
+      background: @lime1;
+      box-shadow: 0px 0px 5px @lime3;
+    }
+    #renameSuc{
+      border: 1px solid @lime3;
+      color: @lime5;
+      background: @lime1;
+      box-shadow: 0px 0px 5px @lime3;
+    }
+    #copy{
+      border: 1px solid @strawberry3;
+      color: @strawberry5;
+      background: @strawberry1;
+      box-shadow: 0px 0px 5px @strawberry3;
+    }
+    #mkdirAlert{
+      border: 1px solid @lime3;
+      color: @lime5;
+      background: @lime1;
+      box-shadow: 0px 0px 5px @lime3;
     }
   }
 

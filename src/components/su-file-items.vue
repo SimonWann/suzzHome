@@ -1,6 +1,8 @@
 <template>
-  <div id="fileItems">
+  <div id="fileItems" @click.right.prevent="showMenu($event)" @click.left="closeMenu">
       <su-file-box :fileData="value" :depth="value.depth" :fileInd="index" v-for="(value, index) in files" />
+      <su-rename></su-rename>
+      <su-right-item-menu :isShow="isMenuShow" :where="where"></su-right-item-menu>
   </div>
 </template>
 
@@ -8,10 +10,14 @@
 import {reactive, ref, defineComponent, computed} from "vue"
 import { useStore } from 'vuex'
 import suFileBox from './su-file-box.vue'
+import suRename from './su-rename.vue'
+import suRightItemMenu from './su-right-item-menu.vue'
 
 export default defineComponent({
     components: {
-        suFileBox
+        suFileBox,
+        suRename,
+        suRightItemMenu
     },
   setup() {
       const store = useStore()
@@ -20,9 +26,25 @@ export default defineComponent({
         //   console.log(store.getters.fileData.data)
           return store.getters.fileData.data
       })
-      
+      let isMenuShow = ref(false)
+      const where = reactive({
+          x: 0,
+          y: 0
+      })
+      function showMenu(e) {
+          isMenuShow.value = true
+          where.x = e.x
+          where.y = e.y
+      }
+      function closeMenu() {
+          isMenuShow.value = false
+      }
       return {
-          files
+          files,
+          showMenu,
+          closeMenu,
+          isMenuShow,
+          where
       }
   }
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="dirItem" @click="changeDir({data:dirList ,path:thisPath})" :style="{paddingLeft: 8*depth + 'px' }" :class="{isHit: dirList.hit}">
-    <ph-triangle class="triangle" :size="5" color="#555761" weight="fill" />
-    <ph-folder :size="20" weight="light" color="#555761" />
+    <ph-triangle class="triangle" :size="5" weight="fill" />
+    <ph-folder :size="20" weight="bold" />
     <div id="filename" >{{filename}}</div>
   </div>
   <su-dir-item :dirPath="thisPath" :depth="dep+1" :dirList=val v-for="(val, index) in stop"></su-dir-item>

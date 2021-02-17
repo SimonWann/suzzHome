@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import init from './init'
 import uiSetting from './uiSetting'
 import moreMenu from './moreMenu'
+import itemSet from './itemSet'
 
 export default createStore({
   state: {
@@ -13,6 +14,7 @@ export default createStore({
   modules: {
     init,
     uiSetting,
-    moreMenu
+    moreMenu,
+    itemSet
   }
 })

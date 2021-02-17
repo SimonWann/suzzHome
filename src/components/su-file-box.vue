@@ -208,6 +208,7 @@ export default defineComponent({
             width: 30%;
             height: 100%;
             overflow: hidden;
+            white-space: nowrap;
           }
           .more{
             position: relative;

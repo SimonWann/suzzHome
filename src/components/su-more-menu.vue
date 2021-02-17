@@ -1,7 +1,7 @@
 <template>
   <ul class="moreMenu" v-show="isShow">
     <li v-if="playVideo" @click="playNow()">播放视频</li>
-    <li v-for="(val, key) in list" @click.stop="moreEv(key)" >{{val}}</li>
+    <li v-for="(val, key) in list" @click.stop="moreEv(key, $event)" >{{val}}</li>
   </ul>
 </template>
 
@@ -15,7 +15,8 @@ export default defineComponent({
     'here',
     'playVideo'
   ],
-  setup(props) {
+  emits: ['info'],
+  setup(props, ctx) {
     const list = reactive({
       download: '下载',
       copy: '复制',
@@ -35,7 +36,7 @@ export default defineComponent({
       }
     })
     let downloadHref = ref('')
-    function moreEv(key: any, newName: string){
+    function moreEv(key: any, e: MouseEvent,newName: string){
       if(key === 'download'){
         // console.log(key)
         store.dispatch('addDownload', props.file)
@@ -46,7 +47,12 @@ export default defineComponent({
       if(key === 'rename') {
         let tmp = JSON.parse(JSON.stringify(props.file))
         tmp.new = newName
-        store.dispatch('rename', tmp)
+        store.commit('delieverRenameInfo', props.file)
+        store.commit('mousePosition', e)
+      }
+      if(key === 'copy') {
+
+        store.commit('copy', {file: props.file, path: store.state.init.profile.currentPath})
       }
       store.commit('closeMenu')
     }

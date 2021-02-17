@@ -32,7 +32,19 @@ export default {
       isReady: false
     },
     isCoded: true,
-    isDelete: false
+    isDelete: false,
+    fileRename: {
+      mouse: {
+        x: -1,
+        y: -1
+      },
+      showRename: false,
+      fileInfo: {},
+      isOk: false
+    },
+    copyStack: [],
+    pasteStack: [],
+    isCopied: true
   }),
   mutations: {
     toggleMenu(state: any) {
@@ -99,6 +111,40 @@ export default {
           state.isDelete = false
         }, 1500);
       }
+    },
+    rename(state: any, data: any) {
+      console.log(data)
+      if(data) {
+        state.fileRename.isOk = true
+        setTimeout(() => {
+          state.fileRename.isOk = false
+        }, 1500);
+      } else {
+        state.fileRename.isOk = false
+      }
+    },
+    mousePosition(state: any, data: any) {
+      state.fileRename.mouse.x = data.x
+      state.fileRename.mouse.y = data.y
+      state.fileRename.showRename = true
+    },
+    closeRename(state: any, data: any) {
+      state.fileRename.showRename = false
+    },
+    delieverRenameInfo(state: any, data: any) {
+      state.fileRename.fileInfo = data
+    },
+    copy(state: any, data: any) {
+      state.copyStack.push(data)
+    },
+    failPaste(state: any, data: any) {
+      state.isCopied = false
+      setTimeout(() => {
+        state.isCopied = true
+      }, 1500);
+    },
+    clearPaste(state: any, data: any) {
+      state.copyStack = []
     }
   },
   actions: {
@@ -156,7 +202,6 @@ export default {
       })
     },
     rename(ctx: any, data: any) {
-      data.curSize = 0
       const senddata = {
         path: ctx.rootState.init.profile.currentPath,
         file: data
@@ -166,6 +211,21 @@ export default {
         data: senddata
       }).then(data => {
         ctx.commit('rename', data.data)
+        ctx.dispatch('readDirAll')
+      })
+    },
+    paste(ctx: any, data: any) {
+      su('/paste', {
+        method: 'post',
+        data: {files: ctx.state.copyStack, path: ctx.rootState.init.profile.currentPath}
+      }).then(data => {
+        console.log(data.data)
+        ctx.commit('clearPaste')
+        for(let i=0;i<data.data.length;i++) {
+          if(data.data[i] !== null) {
+            ctx.commit('failPaste')
+          }
+        }
         ctx.dispatch('readDirAll')
       })
     }

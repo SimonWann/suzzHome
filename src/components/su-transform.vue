@@ -10,6 +10,13 @@
         <span>下载速度: {{Math.round(val.file.curSize/1024/(downSpeed(parseInt(val.file.curSize/val.file.size*100))/1000)/1024*100)/100}}MiB/s, 进度: {{parseInt(val.file.curSize/val.file.size*100)}}%</span>
       </li>
     </div>
+    <div id="uploadList">
+      <li v-for="(val, index) in queue">
+        <div class="loadname">{{val.fileInfo.name}}</div>
+        <progress></progress>
+        <span>上传中～</span>
+      </li>
+    </div>
   </div>
 </template>
 
@@ -67,6 +74,9 @@ export default defineComponent({
     const task = computed(() => {
       return store.state.moreMenu.downloadingTask
     })
+    const queue = computed(() => {
+      return store.state.itemSet.uploadQueue
+    })
     const downloadingFile = computed(() => {
       return store.state.moreMenu.downloadingFile
     })
@@ -100,7 +110,8 @@ export default defineComponent({
       task,
       downloadingFile,
       isDone,
-      downSpeed
+      downSpeed,
+      queue
     }
   }
 })
@@ -144,8 +155,11 @@ export default defineComponent({
     z-index: 2;
     overflow: auto;
     
-    #downList{
-      height: 92%;
+    #downList,#uploadList{
+      li{
+        overflow: hidden;
+      }
+      // height: 92%;
       overflow: auto;
       &::-webkit-scrollbar{
         width: 10px;
