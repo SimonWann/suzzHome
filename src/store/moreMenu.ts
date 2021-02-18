@@ -28,7 +28,7 @@ export default {
     downloadingTask: [],
     downloadedTask: [],
     play: {
-      url: 'http://192.168.3.19:3333/大地惊雷.True.Grit.2010.BD-1080p.X264.AAC-99Mp4.mp4/index.m3u8',
+      url: '',
       isReady: false
     },
     isCoded: true,
@@ -44,7 +44,11 @@ export default {
     },
     copyStack: [],
     pasteStack: [],
-    isCopied: true
+    isCopied: true,
+    photoShow: false,
+    photo: {
+      curPhoto: '' 
+    }
   }),
   mutations: {
     toggleMenu(state: any) {
@@ -145,6 +149,30 @@ export default {
     },
     clearPaste(state: any, data: any) {
       state.copyStack = []
+    },
+    openPhoto(state: any, data: any) {
+      if(state.photo.curPhoto instanceof URL)
+      {URL.revokeObjectURL(state.photo.curPhoto)}
+      data[Symbol.iterator] = function () {
+        let that = this
+        return {
+          keys: Reflect.ownKeys(that),
+          i: -1,
+          next() {
+            return {
+              value: that[this.keys[++this.i]],
+              done: this.i < this.keys.length - 1?false:true
+            }
+          }
+        }
+      }
+      //传输过程 迭代器属性丢失，手写生成器函数以便转化为数组
+      // console.log(data)
+      state.photo.curPhoto = URL.createObjectURL(new Blob([new Uint8Array(data)], { type: 'image/png' }))
+      state.photoShow = true
+    },
+    closePhoto(state: any, data: any) {
+      state.photoShow = false
     }
   },
   actions: {
@@ -227,6 +255,15 @@ export default {
           }
         }
         ctx.dispatch('readDirAll')
+      })
+    },
+    openPhoto(ctx: any, data: any) {
+      return su('/openPhoto', {
+        method: 'post',
+        data
+      }).then(data => {
+        ctx.commit('openPhoto', data.data)
+
       })
     }
   }

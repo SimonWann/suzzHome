@@ -61,7 +61,8 @@ export default defineComponent({
     overflow: hidden;
   }
   *::-webkit-scrollbar{
-    width: 5px;
+    width: 10px;
+    height: 10px;
   }
   *::-webkit-scrollbar-thumb{
     border: 1px solid #7e8087;

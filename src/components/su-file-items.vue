@@ -3,7 +3,9 @@
       <su-file-box :fileData="value" :depth="value.depth" :fileInd="index" v-for="(value, index) in files" />
       <su-rename></su-rename>
       <su-right-item-menu :isShow="isMenuShow" :where="where"></su-right-item-menu>
+      <su-photo></su-photo>
   </div>
+  
 </template>
 
 <script lang="ts">
@@ -12,12 +14,14 @@ import { useStore } from 'vuex'
 import suFileBox from './su-file-box.vue'
 import suRename from './su-rename.vue'
 import suRightItemMenu from './su-right-item-menu.vue'
+import suPhoto from './su-photo.vue'
 
 export default defineComponent({
     components: {
         suFileBox,
         suRename,
-        suRightItemMenu
+        suRightItemMenu,
+        suPhoto
     },
   setup() {
       const store = useStore()

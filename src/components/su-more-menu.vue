@@ -1,6 +1,9 @@
 <template>
   <ul class="moreMenu" v-show="isShow">
     <li v-if="playVideo" @click="playNow()">播放视频</li>
+    <li v-if="isMusic">播放音乐</li>
+    <li v-if="isBook">读书</li>
+    <li v-if="isPhoto" @click="openPhote()">查看图片</li>
     <li v-for="(val, key) in list" @click.stop="moreEv(key, $event)" >{{val}}</li>
   </ul>
 </template>
@@ -13,7 +16,10 @@ export default defineComponent({
     'file',
     'index',
     'here',
-    'playVideo'
+    'playVideo',
+    'isBook',
+    'isMusic',
+    'isPhoto'
   ],
   emits: ['info'],
   setup(props, ctx) {
@@ -23,7 +29,6 @@ export default defineComponent({
       delete: '删除',
       rename: '重命名'
     })
-    
     const store = useStore()
     const curMenu = computed(() => {
       return store.state.moreMenu.currentMenu
@@ -59,7 +64,10 @@ export default defineComponent({
     function playNow() {
       store.dispatch('playVideo', props.file)
     }
-    
+    function openPhote() {
+      store.dispatch('openPhoto', {file: props.file, path: store.state.init.profile.currentPath})
+      
+    }
     return {
       list,
       isShow,
@@ -67,7 +75,8 @@ export default defineComponent({
       curMenu,
       moreEv,
       downloadHref,
-      playNow
+      playNow,
+      openPhote
     }
   }
 })
@@ -93,6 +102,7 @@ export default defineComponent({
     flex-direction: column;
     justify-content: center;
     display: flex;
+    user-select: none;
     li{
       text-align: left;
       padding: 0px 5px;

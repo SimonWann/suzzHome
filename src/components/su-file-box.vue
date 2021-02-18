@@ -15,7 +15,7 @@
         <div @click.stop class="filenameHover" :style="{left:hoverPosition.x + 'px', top:hoverPosition.y + 'px'}" v-show="hoverName">
           {{fileData?.name.name}}
         </div>
-        <su-more-menu  :playVideo="isVideo()" :here="here" :file="fileData" :index="fileInd" ></su-more-menu>
+        <su-more-menu :isPhoto="isPhoto()" :isMusic="isMusic()" :isBook="isBook()"  :playVideo="isVideo()" :here="here" :file="fileData" :index="fileInd" ></su-more-menu>
     </div>
 </template>
 
@@ -24,6 +24,7 @@ import {reactive, ref, defineComponent, computed, watch} from "vue"
 import { useStore } from 'vuex'
 import suMoreMenu from './su-more-menu.vue'
 
+
 export default defineComponent({
   props: {
     fileData: Object,
@@ -31,7 +32,7 @@ export default defineComponent({
     depth: Number
   },
   components: {
-    suMoreMenu
+    suMoreMenu,
   },
   setup(props) {
     const store = useStore()
