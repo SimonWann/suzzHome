@@ -1,5 +1,11 @@
 # suzzhome
 
+![desktop](https://github.com/SimonWann/suzzHome/blob/main/shot/1.png)
+![download](https://github.com/SimonWann/suzzHome/blob/main/shot/3.png)
+![upload](https://github.com/SimonWann/suzzHome/blob/main/shot/5.png)
+![pic](https://github.com/SimonWann/suzzHome/blob/main/shot/6.png)
+![movie](https://github.com/SimonWann/suzzHome/blob/main/shot/7.png)
+
 ## Project setup
 ```
 yarn install
