@@ -1,6 +1,9 @@
 import axios from 'axios'
+const info = require('./ip.config.ts')
+
+
 const su = axios.create({
-    baseURL: 'http://192.168.3.19:3333/',
+    baseURL: `http://${info.address}:${info.port}/`,
     timeout: 1000,
     method: 'get',
     headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -60,7 +63,7 @@ export default {
       })
     },
     upload(ctx: any, data: any) {
-      const soNet = new WebSocket('ws://192.168.3.19:3334/uploadInfo')
+      const soNet = new WebSocket(`ws://${info.address}:${info.soPort}/uploadInfo`)
       let files = data.data
       data = {
         name: data.file.name,
@@ -85,7 +88,7 @@ export default {
         ctx.commit('endLoad')
         return false
       }
-      const soNet = new WebSocket('ws://192.168.3.19:3334/upload')
+      const soNet = new WebSocket(`ws://${info.address}:${info.soPort}/upload`)
       let file
       soNet.onopen = async function(){
         let cnt = 0

@@ -1,11 +1,13 @@
 import axios from 'axios'
+const info = require('./ip.config.ts')
+
 const su = axios.create({
-    baseURL: 'http://192.168.3.19:3333/',
+    baseURL: `http://${info.address}:${info.port}/`,
     timeout: 10000000,
     method: 'get',
     headers: {'X-Requested-With': 'XMLHttpRequest'},
 })
-// const soNet = new WebSocket('ws://192.168.3.19:3334')
+// const soNet = new WebSocket('ws://192.168.3.19:${info.soPort}')
 // soNet.onopen = function(){
 //   this.send('hello, websockt')
 //   this.onmessage = function(event) {
@@ -83,7 +85,7 @@ export default {
       if(data === 403){
         state.isCoded = false
       }
-      state.play.url = `http://192.168.3.19:3333/${data.file.name.name}/index.m3u8`
+      state.play.url = `http://${info.address}:${info.port}/${data.file.name.name}/index.m3u8`
       console.log(data)
       state.play.isReady = true
     },
@@ -187,7 +189,7 @@ export default {
       
     },
     download(ctx: any, data: any) {
-      const soNet = new WebSocket('ws://192.168.3.19:3334/download')
+      const soNet = new WebSocket(`ws://${info.address}:${info.soPort}/download`)
       soNet.onopen = function(){
         this.send(encodeURIComponent(JSON.stringify(ctx.state.downloadingTask[0])))
         console.log(ctx.state.downloadingTask[0])
